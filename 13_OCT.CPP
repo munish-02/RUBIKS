@@ -1,10 +1,9 @@
-
 #include<iostream.h>
 #include<dos.h>
 #include<conio.h>
 #include<graphics.h>
 #include<stdio.h>
-
+int state,moves,neg=0;
 struct opt
 {
 int no;
@@ -44,10 +43,25 @@ void ui()//Up right
 	swap(u4,u8);
 	swap(u4,u6);
 	swap(u4,u2); delay(xx);
+	if(state==1)
+		moves++;
+	else
+	neg++;
+
+	cout<<moves<<" " ;
 	}
 void uu()
 	{for (int i = 1; i<4;i++)
 	 ui();       delay(xx);
+	 if(state==1)
+	 {
+		moves--;
+		moves--;
+	 }
+	 else
+	 neg--;
+
+	cout<<moves<<" ";
 	}
 void hh()
 	{ //LEFT DOWN
@@ -66,11 +80,26 @@ void hh()
 	swap(r2,r6);
 	swap(r2,r8);
 	swap(r2,r4); delay(xx);
+	if(state==1)
+		moves++;
+	else neg--;
+	cout<<moves<<" ";
 	}
+
 void li()
 	{//LEFT UP
 	for (int i = 1 ; i<4; i++)
 	hh();        delay(xx);
+	if(state==1)
+	{
+		moves--;
+		moves--;
+	}
+	else
+	neg-=2;
+
+	cout<<moves<<" ";
+
 	}
 void rr()
 	{//RIGHT UP
@@ -89,11 +118,28 @@ void rr()
 	swap(l2,l6);
 	swap(l2,l8);
 	swap(l2,l4); delay(xx);
+	if(state==1)
+		moves++;
+	else
+	neg++;
+
+	cout<<moves<<" ";
+
 	}
 void ri()
 	{//Right down
 	for(int i = 1 ; i<4 ; i++ )
 	rr();        delay(xx);
+	if(state==1)
+	{
+		moves--;
+		moves--;
+	}
+	else
+	neg-=2;
+
+	cout<<moves<<" "  ;
+
 	}
 
 void ff()
@@ -114,12 +160,26 @@ void ff()
 	 swap(u9,r3);
 	 swap(u8,r6);
 	 swap(u7,r9);delay(xx);
+	if(state==1)
+		moves++;
+	else neg++;
 
+	cout<<moves<<" ";
 	 }
 void fi()
 {    // front left
 	for(int i = 1 ; i<4; i++)
 	ff();        delay(xx);
+
+	if(state==1)
+		moves++;
+
+
+	else
+	neg-=2;
+
+	cout<<moves<<" ";
+
 	}
 
 void bi()
@@ -139,11 +199,28 @@ void bi()
 	swap(u1,r7);
 	swap(u2,r4);
 	swap(u3,r1); delay(xx);
+	if(state==1)
+	{
+		moves++;
+	}
+	else
+	neg++;
+
+	cout<<moves<<" " ;
+
 	}
 void bb()
 	{ //back left
 	for(int i =1; i<4;i++)
 	bi();        delay(xx);
+	if(state==1)
+	{
+		moves--;
+		moves--;
+	}
+	else neg-=2;
+
+	cout<<moves ;
 	}
 void dd()
 	 {//down right
@@ -162,17 +239,47 @@ void dd()
 	 swap(f7,r7);
 	 swap(f8,r8);
 	 swap(f9,r9);delay(xx);
+	 if(state==1)
+	{
+		moves++;
+	}
+	else
+	neg++;
+
+	cout<<moves<<" ";
+
 	 }
 void di()
 	{for(int i = 1;i<4;i++)
 	dd();
 	//down left  delay(20);
+	if(state==1)
+	{
+		moves--;
+		moves--;
+	}
+	else
+	neg-=2;
+
+	cout<<moves   ;
+
 	}
 void mu();
 void md()
 	{//middle down
 	for(int i = 1; i<4 ; i++)
 	mu();        delay(xx);
+
+	if(state==1)
+	{
+		moves--;
+		moves--;
+	}
+	else
+	neg-=2;
+
+	cout<<moves<<" ";
+
 	}
 void mu()
 	{//middle up
@@ -185,12 +292,24 @@ void mu()
 	swap(f2,d2);
 	swap(f5,d5);
 	swap(f8,d8); delay(xx);
+	if(state==1)
+	{
+		moves++;
+	}
+	else
+	neg++;
+
+	cout<<moves<<" " ;
 	}
 void ml();
 void mr()
 	{ml();
+	state=0;
 	 ml();
 	 ml(); delay(xx);
+	 state=1;
+
+	cout<<moves<<" " ;
 	}
 void ml()
 	{swap(f4,l4);
@@ -203,10 +322,22 @@ void ml()
 	swap(f5,r5);
 	swap(f6,r6);
 	delay(20);
+	if(state==1)
+	{
+		moves--;
+		moves--;
+	}
+	else
+	{neg++;
+	}
+
+	cout<<moves<<" " ;
+
 	}
 void flj()
 {
 	fi();uu();ff();
+
 }
 void frj()
 {
@@ -286,7 +417,7 @@ void main ()
 	{       clrscr();
 	int gd,gm ;
 	gd=DETECT;
-	initgraph(&gd,&gm,"C:\\turboc3\\bgi");
+	initgraph(&gd,&gm,"C:\\TC\\bgi");
 	opt01.x1=10;
 
 char popt01[50]="(Ui)";
@@ -1124,6 +1255,9 @@ for (int yy = 1 ; ;yy++ )
 			mr();
 	}
 
+	moves=0;
+	state=0;
+	neg=0;
 /*-----------------------------------------------ALGORITHM STARTS -----------------------
 checking if the cube is solved*/
 	if(!solved())
@@ -1137,8 +1271,9 @@ checking if the cube is solved*/
 		{
 		for(int ij=0;ij<4;ij++)
 		{
+	state=1;
 		if((f6.color==f5.color)&&(l4.color==d5.color))
-			{cout<<"CHECKING";
+			{
 			ff();}
 		else if((f5.color==d2.color)&&(d5.color==f8.color))
 			{
@@ -1200,6 +1335,7 @@ checking if the cube is solved*/
 			{
 			mu();bi();ui();ui();md();
 			}
+	state=0;
 		 uu();
 		 }
 		 uu();mr();di();
@@ -1213,6 +1349,7 @@ checking if the cube is solved*/
 	//step 2 solving
 	for(int jji=0;jji<20;jji++)
 	{
+	state=1;
 	if(((d5.color==f7.color)||(d5.color==r9.color)||(d5.color==d1.color))&&(f7.color!=f5.color))
 		{
 		frj();
@@ -1253,10 +1390,11 @@ checking if the cube is solved*/
 		{
 		break;
 		}
-
+	state=0;
 
 	for(int ijj=0;ijj<4;ijj++)
 	{
+		state=1;
 		if(f5.color==f6.color&&f5.color==f9.color&&l5.color==l4.color&&l5.color==l7.color&&d5.color==d3.color)
 			break;
 		if((f3.color==f5.color)&&(l1.color==d5.color)&&(u9.color==l5.color)&&(u2.color==f5.color)&&(b2.color==l5.color))
@@ -1508,6 +1646,7 @@ checking if the cube is solved*/
 		cout<<"1493";
 		}
 	uu();
+	moves--;
 	if(((d5.color==f7.color)||(d5.color==r9.color)||(d5.color==d1.color))&&(f7.color!=f5.color))
 		{
 		frj();
@@ -1545,19 +1684,20 @@ checking if the cube is solved*/
 		cout<<"mofo";
 		}
 	}
-
+	state=0;
 	ml();dd();ui();
 	}
 	}
 	//-------------------------------------secOND LAYER SOLVED-----------------------------------------------------------------------------
 	//TOP COLOUR STARTS HERE
+	state=0;
 		if((u5.color==f2.color)&&(u5.color==l1.color)&&(u5.color==l2.color)&&(u5.color==l3.color)&&(u5.color==r1.color)&&(u5.color==r2.color)&&(u5.color==r3.color)&&(u5.color==b2.color))
 		{
 		rr();uu();bi();md();hh();uu();md();md();hh();hh();md();hh();ri();ui();ri();ff();rr();fi();mu();mu();rr();rr();li();li();  cout<<"THIS MESSED UP LOL";
 		}
+	cout<<moves;
 
-
-
+	cout<<neg;
 
 	getch();
 	}
